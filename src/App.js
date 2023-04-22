@@ -8,7 +8,8 @@ class App extends Component {
     super();
 
     this.state = {
-      robots: []
+      robots: [],
+
     }
   }
 
@@ -23,6 +24,23 @@ class App extends Component {
   render(){
     return (
       <div className="App">
+      <input 
+        className='search-box'
+        type='search'
+        placeholder='search robots'
+        onChange={(event) => {
+          console.log(event.target.value);
+          const searchString = event.target.value.toLowerCase();
+          const filteredRobots = this.state.robots.filter((monster) => {
+            return monster.name.toLowerCase().includes(searchString);
+          });
+
+          this.setState(() => {
+            return { robots: filteredRobots }
+
+          })
+        }}
+      />
         {this.state.robots.map((robot) => {
             return( 
               <div key={robot.id}>
