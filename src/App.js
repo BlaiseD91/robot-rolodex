@@ -4,12 +4,13 @@ import './App.css';
 
 class App extends Component {
 
+  //29!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   constructor(){
     super();
 
     this.state = {
       robots: [],
-
+      searchField: ""
     }
   }
 
@@ -21,30 +22,33 @@ class App extends Component {
     }))
   }
 
+  onSearchChange = (event) => {
+    const searchField = event.target.value.toLowerCase();
+    this.setState(() => {
+      return { searchField }
+    })
+  };
+
   render(){
+    const { robots, searchField } = this.state;
+    const { onSearchChange} = this;
+
+    const filteredRobots = robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(searchField);
+    });
+
     return (
       <div className="App">
       <input 
         className='search-box'
         type='search'
         placeholder='search robots'
-        onChange={(event) => {
-          console.log(event.target.value);
-          const searchString = event.target.value.toLowerCase();
-          const filteredRobots = this.state.robots.filter((monster) => {
-            return monster.name.toLowerCase().includes(searchString);
-          });
-
-          this.setState(() => {
-            return { robots: filteredRobots }
-
-          })
-        }}
+        onChange={onSearchChange}
       />
-        {this.state.robots.map((robot) => {
+        {filteredRobots.map((robot) => {
             return( 
-              <div key={robot.id}>
-                <h1>{robot.name}</h1>
+              <div key={ robot.id }>
+                <h1>{ robot.name }</h1>
               </div>
             );
           })}
